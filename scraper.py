@@ -99,8 +99,6 @@ def create_new_tab_for_pagination(df):
     
     if check_exists_by_xpath(driver, "//a[@class='page-link'][contains(text(), 'Next')]"):
         element = driver.find_element(By.XPATH, "//a[@class='page-link'][contains(text(), 'Next')]").get_attribute('href')        
-        #Open a new window
-#        driver.execute_script("window.open('');")
         # Switch to the new window and open a new URL
         driver.switch_to.window(driver.window_handles[0])
         driver.get(element)
