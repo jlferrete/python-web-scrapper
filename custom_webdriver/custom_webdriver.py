@@ -21,13 +21,13 @@ def interceptor(request):
 options = Options()
 options.add_argument("start-maximized")
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
-#options.add_experimental_option(
+options.add_experimental_option(
     # this will disable image loading
-    #"prefs", {"profile.managed_default_content_settings.images": 2}
-#)
+    "prefs", {"profile.managed_default_content_settings.images": 2}
+)
 #options.add_argument('--incognito')
 # Enable headless mode in Selenium
-# options.add_argument('--headless=new')
+options.add_argument('--headless=new')
 
 driver = webdriver.Chrome(options=options,service=ChromeService(ChromeDriverManager().install()))
 

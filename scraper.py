@@ -1,8 +1,9 @@
 import random
-import time
 import pandas as pd
+import xlsxwriter
+from datetime import datetime
 from custom_webdriver.custom_webdriver import driver
-from custom_credentials.custom_credentials import USER, PWD, WEB_URL_TO_SCRAPE
+from custom_credentials.custom_credentials import USER, PWD, WEB_URL_TO_SCRAPE, EXPORT_FILE_NAME
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,7 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import ElementNotInteractableException
 
 def main():
-    
+    print("Starting to scrape")
     #Create dataframe and set columns
     df = pd.DataFrame()
     df['Product_name'] = None
@@ -28,14 +29,19 @@ def main():
     exists_next_page = True
     while exists_next_page:
         exists_next_page = create_new_tab_for_pagination(df)
+    
+    # Export DataFrame to XLSX
+    df_reset=df.set_index('Product_name')
+    with pd.ExcelWriter(EXPORT_FILE_NAME, engine='xlsxwriter') as writer:
+        df_reset.to_excel(writer, sheet_name= datetime.today().strftime('%Y-%m-%d'))
 
-    print(df)
-
-    print("Mi programa ha terminado de ejecutarse.") 
-    input("Presione Enter para cerrar el programa.")
+    #print("Mi programa ha terminado de ejecutarse.") 
+    #input("Presione Enter para cerrar el programa.")
 
     # terminate the browser instance
     driver.quit()
+
+    print("Web Scrapped successfully")
 
 def navigate_to_login():
     # wait until presence of button is located
